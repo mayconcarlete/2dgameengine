@@ -4,6 +4,8 @@
 #include <ctime>
 #include <sstream>
 
+std::vector<LogEntry> Logger::logEntries;
+
 std::string getCurrentDateInString(){
   std::time_t now = std::time(0);
   char* dt = std::ctime(&now);
@@ -21,9 +23,17 @@ std::string getCurrentDateInString(){
 }
 
 void Logger::Log(const std::string& message){
-  std::cout << "\x1B[32m" << "LOG | " << "[ " << getCurrentDateInString() << " ]" << " - " << message  << "\033[0m" << std::endl;
+  LogEntry logEntry;
+  logEntry.type = LOG_INFO;
+  logEntry.message = std::string("LOG | ") + std::string("[ ") + getCurrentDateInString() + std::string(" ] - ") + message ;
+  std::cout << "\x1B[32m" << logEntry.message << "\033[0m" << std::endl;
+  logEntries.push_back(logEntry);
 }
 
 void Logger::Err(const std::string& message){
-  std::cerr << "\x1B[31m" << "ERR | " << "[ " << getCurrentDateInString() << " ]" << " - " <<  message << "\033[0m" << std::endl;
+  LogEntry logEntry;
+  logEntry.type = LOG_ERROR;
+  logEntry.message = std::string("ERR | ") + std::string("[ ") + getCurrentDateInString() + std::string(" ]") + std::string(" - ") + message;
+  std::cerr << "\x1B[31m" << logEntry.message << "\033[0m" << std::endl;
+  logEntries.push_back(logEntry);
 }
