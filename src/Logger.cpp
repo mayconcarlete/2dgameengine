@@ -21,9 +21,9 @@ std::string getCurrentDateInString(){
 }
 
 void Logger::Log(const std::string& message){
-  std::cout << "\033[32mLOG | " << "[ " << getCurrentDateInString() << " ]" << " - " << message << std::endl;
+  std::cout << "\x1B[32m" << "LOG | " << "[ " << getCurrentDateInString() << " ]" << " - " << message  << "\033[0m" << std::endl;
 }
 
 void Logger::Err(const std::string& message){
-  std::cerr << "\033[31mERR | " << "[ " << getCurrentDateInString() << " ]" << " - " << message << std::endl;
+  std::cerr << "\x1B[31m" << "ERR | " << "[ " << getCurrentDateInString() << " ]" << " - " <<  message << "\033[0m" << std::endl;
 }
