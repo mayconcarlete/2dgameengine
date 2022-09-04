@@ -1,7 +1,8 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include "Game.h"
-
+#include <glm/glm.hpp>
 
 Game::Game(){
   // add implementation
@@ -78,18 +79,53 @@ void Game::ProcessInput(){
   }
 
 }
+
+glm::vec2 playerPosition;
+glm::vec2 playerVelocity;
+
 void Game::Setup(){
+  playerPosition = glm::vec2(10.0, 20.0);
+  playerVelocity = glm::vec2(1.0, 0.0);
 
 }
-void Game::Update(){}
+void Game::Update(){
+  // if we are too fast we going to waste time until we reach the MILLISECONDS_PER_FRAME
+  // while(!SDL_TICKS_PASSED(SDL_GetTicks(), millisecondsPreviousFrame + MILLISECS_PER_FRAME));
+  // usando o SDL_Delay a gente delega esse delay pro sistema operacional, economizando o uso de CPU.
+  int timeToWait = MILLISECS_PER_FRAME - (SDL_GetTicks() - millisecondsPreviousFrame);
+  if(timeToWait > 0 && timeToWait <= MILLISECS_PER_FRAME){
+    SDL_Delay(timeToWait);
+  }
+
+  // control the fps here until we reach the MILLISEC_PER_FRAME
+  millisecondsPreviousFrame = SDL_GetTicks();
+  playerPosition.x += playerVelocity.x;
+  playerPosition.y += playerVelocity.y;
+
+}
 void Game::Render(){
   SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
   SDL_RenderClear(renderer);
   // draw here
+  // desenha um retangulo
   // SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   // SDL_Rect player = {10, 10, 20, 20};
   // SDL_RenderFillRect(renderer, &player);
 
+  // carrega um PNG
+  SDL_Surface* surface = IMG_Load("./assets/images/tank-tiger-right.png");
+  SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+  SDL_FreeSurface(surface);
+  SDL_Rect dstRect = {
+    static_cast<int>(playerPosition.x), // parse float to integer
+    static_cast<int>(playerPosition.y), // parse float to integer
+    32,
+    32
+  };
+  // render copy pode pegar um pedaço do png(onde está o null) bom para usar quando queremos
+  // pega só um pedaço da imagem.
+  SDL_RenderCopy(renderer, texture, NULL, &dstRect);
+  SDL_DestroyTexture(texture);
   SDL_RenderPresent(renderer);
 }
 
@@ -99,6 +135,7 @@ void Game::Run(){
     ProcessInput();
     Update();
     Render();
+
   }
 }
 
