@@ -1,21 +1,24 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "Game.h"
 #include <glm/glm.hpp>
+
+#include "Game.h"
+#include "Logger.h"
 
 Game::Game(){
   // add implementation
   isRunning = false;
-  std::cout << " Game constructor called." << std::endl;
+  Logger::Log("Game constructor called.");
 }
 Game::~Game(){
   // todo destroy
-  std::cout << " Game destructor called." << std::endl;
+  Logger::Log("Game destructor called.");
 }
+
 void Game::Initialize(){
   if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
-    std::cerr << "Error initializing SDL." << std::endl;
+    Logger::Err("Error initializing SDL.");
     return;
   }
   // fake fullscreen mode.
@@ -38,7 +41,7 @@ void Game::Initialize(){
     SDL_WINDOW_BORDERLESS
   );
   if(!window){
-    std::cerr << "Error creating SDL window." <<std::endl;
+    Logger::Err("Error creating SDL window.");
     return;
   }
   renderer = SDL_CreateRenderer(
@@ -47,7 +50,7 @@ void Game::Initialize(){
     SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
   );
   if(!renderer){
-    std::cerr << "Error creating SDL Renderer." << std::endl;
+    Logger::Err("Error creating SDL Renderer.");
     return;
   }
   // to set to real full screen we need to call the function SDL_SetWindowFullscreen
