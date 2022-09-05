@@ -8,7 +8,6 @@ std::vector<LogEntry> Logger::logEntries;
 
 std::string getCurrentDateInString(){
   std::time_t now = std::time(0);
-  char* dt = std::ctime(&now);
   std::tm* ltm = std::localtime(&now);
   int year = ltm->tm_year + 1900;
   int month = ltm->tm_mon + 1;
