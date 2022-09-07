@@ -123,7 +123,7 @@ class Registry{
     bool RemoveComponent(Entity entity);
 
     template <typename TComponent>
-    bool HasComponent(Entity entity);
+    bool HasComponent(Entity entity) const;
 
     void AddEntityToSystem(Entity entity);
 };
@@ -171,7 +171,7 @@ bool Registry::RemoveComponent(Entity entity){
 
 
 template <typename TComponent>
-bool Registry::HasComponent(Entity entity){
+bool Registry::HasComponent(Entity entity) const {
   const auto componentId = Component<TComponent>::GetId();
   const auto entityId = entity.GetId();
 

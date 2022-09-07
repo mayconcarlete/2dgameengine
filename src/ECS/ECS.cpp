@@ -2,10 +2,11 @@
 #include <algorithm>
 #include "../Logger/Logger.h"
 
+int IComponent::nextId = 0;
+
 int Entity::GetId() const {
   return id;
 }
-
 
 void System::AddEntityToSystem(Entity entity){
   entities.push_back(entity);
