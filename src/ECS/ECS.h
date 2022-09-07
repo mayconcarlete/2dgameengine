@@ -119,6 +119,12 @@ class Registry{
     template <typename TComponent, typename ...TArgs>
     void AddComponent(Entity entity, TArgs&&...args);
 
+    template <typename TComponent>
+    bool RemoveComponent(Entity entity);
+
+    template <typename TComponent>
+    bool HasComponent(Entity entity);
+
     void AddEntityToSystem(Entity entity);
 };
 
@@ -154,5 +160,23 @@ void System::RequireComponent(){
   const auto componentId = Component<TComponent>::GetId();
   componentSignature.set(componentId);
 }
+
+template <typename TComponent>
+bool Registry::RemoveComponent(Entity entity){
+  const auto componentId = Component<TComponent>::GetId();
+  const auto entityId = entity.GetId();
+
+  entityComponentSignatures[entityId].set(componentId, false);
+}
+
+
+template <typename TComponent>
+bool Registry::HasComponent(Entity entity){
+  const auto componentId = Component<TComponent>::GetId();
+  const auto entityId = entity.GetId();
+
+  return entityComponentSignatures[entityId].test(componentId);
+}
+
 
 #endif
