@@ -8,6 +8,22 @@ int Entity::GetId() const {
   return id;
 }
 
+Entity Registry::CreateEntity(){
+  int entityId;
+  entityId = numEntities++;
+
+  Entity entity(entityId);
+  entitiesToBeAdded.insert(entity);
+
+  if((unsigned)entityId >= entityComponentSignatures.size()){
+    entityComponentSignatures.resize(entityId + 1);
+  }
+
+  Logger::Log("Entity created with id: " + std::to_string(entityId));
+
+  return entity;
+}
+
 void System::AddEntityToSystem(Entity entity){
   entities.push_back(entity);
 }
@@ -29,17 +45,6 @@ const Signature& System::GetComponentSignature() const{
   return componentSignature;
 }
 
-Entity Registry::CreateEntity(){
-  int entityId;
-  entityId = numEntities++;
-
-  Entity entity(entityId);
-  entitiesToBeAdded.insert(entity);
-
-  Logger::Log("Entity created with id: " + std::to_string(entityId));
-
-  return entity;
-}
 
 void Registry::AddEntityToSystem(Entity entity){
   const auto entityId = entity.GetId();
@@ -55,5 +60,8 @@ void Registry::AddEntityToSystem(Entity entity){
 }
 
 void Registry::Update(){
-
+  for(auto entity: entitiesToBeAdded){
+    AddEntityToSystem(entity);
+  }
+  entitiesToBeAdded.clear();
 }

@@ -6,6 +6,7 @@
 #include <set>
 #include <unordered_map>
 #include <typeindex>
+#include <memory>
 
 const unsigned int MAX_COMPONENTS = 32;
 
@@ -120,7 +121,7 @@ class Registry{
     void AddComponent(Entity entity, TArgs&&...args);
 
     template <typename TComponent>
-    bool RemoveComponent(Entity entity);
+    void RemoveComponent(Entity entity);
 
     template <typename TComponent>
     bool HasComponent(Entity entity) const;
@@ -198,7 +199,7 @@ void System::RequireComponent(){
 }
 
 template <typename TComponent>
-bool Registry::RemoveComponent(Entity entity){
+void Registry::RemoveComponent(Entity entity){
   const auto componentId = Component<TComponent>::GetId();
   const auto entityId = entity.GetId();
 

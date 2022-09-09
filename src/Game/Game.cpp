@@ -10,6 +10,7 @@
 Game::Game(){
   // add implementation
   isRunning = false;
+  registry = new Registry();
   Logger::Log("Game constructor called.");
 }
 Game::~Game(){
@@ -91,6 +92,8 @@ void Game::Setup(){
   // tank.AddComponent<TransformComponent>();
   // tank.AddComponent<BoxCollider>();
   // tank.AddComponent<SpriteComponent>("./assets/images/tank.png")
+  Entity tank = registry->CreateEntity();
+  Entity truck = registry->CreateEntity();
 }
 void Game::Update(){
   // if we are too fast we going to waste time until we reach the MILLISECONDS_PER_FRAME
