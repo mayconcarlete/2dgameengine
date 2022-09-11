@@ -2,15 +2,17 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <glm/glm.hpp>
+#include <memory>
 
 #include "Game.h"
 #include "../Logger/Logger.h"
 #include "../ECS/ECS.h"
 
+
 Game::Game(){
   // add implementation
   isRunning = false;
-  registry = new Registry();
+  registry = std::make_unique<Registry>();
   Logger::Log("Game constructor called.");
 }
 Game::~Game(){
@@ -147,7 +149,6 @@ void Game::Run(){
     ProcessInput();
     Update();
     Render();
-
   }
 }
 

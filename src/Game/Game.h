@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <SDL2/SDL.h>
+#include <memory>
 
 #include "../ECS/ECS.h"
 
@@ -14,7 +15,8 @@ class Game {
     int millisecondsPreviousFrame = 0;
     SDL_Window* window;
     SDL_Renderer* renderer;
-    Registry* registry;
+    std::unique_ptr<Registry> registry;
+
   public:
     int windowWidth;
     int windowHeight;
