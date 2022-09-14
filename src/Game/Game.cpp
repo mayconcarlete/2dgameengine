@@ -7,7 +7,8 @@
 #include "Game.h"
 #include "../Logger/Logger.h"
 #include "../ECS/ECS.h"
-
+#include "../Components/TransformComponent.h"
+#include "../Components/RigidBodyComponent.h"
 
 Game::Game(){
   // add implementation
@@ -94,8 +95,14 @@ void Game::Setup(){
   // tank.AddComponent<TransformComponent>();
   // tank.AddComponent<BoxCollider>();
   // tank.AddComponent<SpriteComponent>("./assets/images/tank.png")
+
+  // create an entity
   Entity tank = registry->CreateEntity();
   Entity truck = registry->CreateEntity();
+
+  // create some components to that entity;
+  registry->AddComponent<TransformComponent>(tank, glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0);
+  registry->AddComponent<RigidBodyComponent>(tank, glm::vec2(50.0, 0.0));
 }
 void Game::Update(){
   // if we are too fast we going to waste time until we reach the MILLISECONDS_PER_FRAME

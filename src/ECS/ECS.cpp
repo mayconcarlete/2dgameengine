@@ -13,6 +13,7 @@ Entity Registry::CreateEntity(){
   entityId = numEntities++;
 
   Entity entity(entityId);
+  entity.registry = this;
   entitiesToBeAdded.insert(entity);
 
   if((unsigned)entityId >= entityComponentSignatures.size()){
@@ -38,6 +39,7 @@ void System::RemoveEntityFromSystem(Entity entity){
     ),
   entities.end());
 }
+
 std::vector<Entity> System::GetSystemEntities() const {
   return entities;
 }
