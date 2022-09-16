@@ -101,8 +101,10 @@ void Game::Setup(){
   Entity truck = registry->CreateEntity();
 
   // create some components to that entity;
-  registry->AddComponent<TransformComponent>(tank, glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0);
-  registry->AddComponent<RigidBodyComponent>(tank, glm::vec2(50.0, 0.0));
+  // registry->AddComponent<TransformComponent>(tank, glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0);
+  // registry->AddComponent<RigidBodyComponent>(tank, glm::vec2(50.0, 0.0));
+  tank.AddComponent<TransformComponent>(glm::vec2(10.0, 30.0), glm::vec2(1.0, 1.0), 0.0);
+  tank.RemoveComponent<TransformComponent>();
 }
 void Game::Update(){
   // if we are too fast we going to waste time until we reach the MILLISECONDS_PER_FRAME

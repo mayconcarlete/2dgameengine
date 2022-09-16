@@ -206,7 +206,7 @@ void Registry::AddComponent(Entity entity, TArgs&& ...args){
   componentPool->Set(entityId, newComponent);
 
   entityComponentSignatures[entityId].set(componentId);
-  Logger::Log("Component id: " + std::to_string(componentId) + "was added to entity id: " + std::to_string(entityId));
+  Logger::Log("Component id: " + std::to_string(componentId) + " was added to entity id: " + std::to_string(entityId));
 }
 
 template <typename TComponent>
@@ -221,6 +221,7 @@ void Registry::RemoveComponent(Entity entity){
   const auto entityId = entity.GetId();
 
   entityComponentSignatures[entityId].set(componentId, false);
+  Logger::Log("Component id: " + std::to_string(componentId) + " was removed to entity id: " + std::to_string(entityId));
 }
 
 
@@ -239,17 +240,39 @@ TComponent& Registry::GetComponent(Entity entity) const {
   return componentPool->Get(entityId);
 }
 
+// template <typename TComponent, typename ...TArgs>
+// void Entity::AddComponent(TArgs&& ...args){}
+
+// template <typename TComponent>
+// void Entity::RemoveComponent(){}
+
+// template <typename TComponent>
+// bool Entity::HasComponent() const {
+//   return true;
+// }
+
+// template <typename TComponent>
+// TComponent& Entity::GetComponent() const {}
+
 template <typename TComponent, typename ...TArgs>
-void Entity::AddComponent(TArgs&& ...args){}
-
-template <typename TComponent>
-void Entity::RemoveComponent(){}
-
-template <typename TComponent>
-bool Entity::HasComponent() const {
-  return true;
+void Entity::AddComponent(TArgs&& ...args){
+  registry->AddComponent<TComponent>(*this, std::forward<TArgs>(args)...);
 }
 
 template <typename TComponent>
-TComponent& Entity::GetComponent() const {}
+void Entity::RemoveComponent() {
+  registry->RemoveComponent<TComponent>(*this);
+}
+
+template <typename TComponent>
+bool Entity::HasComponent() const {
+  return registry->HasComponent<TComponent>(*this);
+}
+
+template <typename TComponent>
+TComponent& Entity::GetComponent() const {
+  return registry->GetComponent<TComponent>(*this);
+}
+
+
 #endif
